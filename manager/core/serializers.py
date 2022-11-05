@@ -9,10 +9,11 @@ class CurrencySerializer(serializers.ModelSerializer):
         fields = ("id", "code", "name")
 
 class CategorySerializer(serializers.ModelSerializer):
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     class Meta:
         model = Category
-        fields = ("id", "name")
+        fields = ("id", "name", "user")
 
 class WriteTransactionSerializer(serializers.ModelSerializer):
     currency = serializers.SlugRelatedField(slug_field="code", queryset=Currency.objects.all())
@@ -30,6 +31,7 @@ class WriteTransactionSerializer(serializers.ModelSerializer):
 
 
 class ReadTransactionSerializer(serializers.ModelSerializer):
+    currency = CurrencySerializer()
     category = CategorySerializer()
 
     class Meta:
