@@ -11,7 +11,7 @@ class Currency(models.Model):
 
 
 class Category(models.Model):
-    # user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="categories")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="categories")
     name = models.CharField(max_length=32, blank=True)
 
     def __str__(self):
@@ -19,7 +19,7 @@ class Category(models.Model):
 
 
 class Transaction(models.Model):
-    # user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="transactions")
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="transactions")
     amount = models.DecimalField(max_digits=15, decimal_places=2)
     currency = models.ForeignKey(Currency, on_delete=models.PROTECT, related_name="transactions")
     date = models.DateTimeField()
