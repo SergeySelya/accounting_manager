@@ -1,5 +1,6 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, AbstractUser
 from django.db import models
+
 
 
 class Currency(models.Model):
@@ -30,6 +31,7 @@ class Transaction(models.Model):
 
     def __str__(self):
         return f"{self.amount} {self.currency.code} {self.date}"
+
 
 
 # class AllowList(models.Model):

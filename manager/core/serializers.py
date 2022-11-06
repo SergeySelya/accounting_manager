@@ -3,11 +3,14 @@ from rest_framework import serializers
 from core.models import Category, Currency, Transaction
 
 
+
 class ReadUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ("id", "username", "first_name", "last_name")
         read_only_fields = fields
+
+
 
 
 class CurrencySerializer(serializers.ModelSerializer):
@@ -63,6 +66,21 @@ class ReadTransactionSerializer(serializers.ModelSerializer):
         read_only_fields = fields
 
 
-# class StatisticTransactionSerializer(serializers.ModelSerializer):
-#     currency = CurrencySerializer()
-#     category = CategorySerializer()
+class StatisticTransactionSerializer(serializers.ModelSerializer):
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    currency = CurrencySerializer()
+    category = CategorySerializer()
+    class Meta:
+        model = Transaction
+        fields = (
+            "id",
+            "amount",
+            "currency",
+            "date",
+            "description",
+            "category",
+            "user",
+        )
+
+        read_only_fields = fields
+
