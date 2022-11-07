@@ -23,4 +23,4 @@
 | `DELETE` |   -//-                                         |                                          |
 | `GET`    |`/statistics/`                                  | Statistic of user(current balance)       |
 
-Cronjobs - sending messages automatically daily at 23:59
+Cronjobs - sending messages automatically daily at 23:59(sends user transactions for the current day)
