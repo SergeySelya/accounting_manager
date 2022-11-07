@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -40,7 +40,10 @@ INSTALLED_APPS = [
     "rest_framework.authtoken",
     "djoser",
     "core",
-    "django_filters"
+    "django_filters",
+    "post_office",
+    "django_crontab",
+
 ]
 
 MIDDLEWARE = [
@@ -84,11 +87,6 @@ DATABASES = {
 }
 
 
-
-# AUTH_USER_MODEL = 'users.CustomUser'
-
-
-
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
@@ -129,21 +127,29 @@ STATIC_URL = "static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 REST_FRAMEWORK = {
-    # "DEFAULT_PERMISSION_CLASSES": [
-    #     "rest_framework.permissions.IsAuthenticated",
-    # ],
+
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.TokenAuthentication",
         "rest_framework.authentication.SessionAuthentication",
     ],
-    # "DEFAULT_RENDERER_CLASSES": [
-    #     "rest_framework.renderers.JSONRenderer",
-    #     "rest_framework_yaml.renderers.YAMLRenderer",
-    #     "rest_framework_xml.renderers.XMLRenderer",
-    #     "rest_framework.renderers.BrowsableAPIRenderer",
-    # ],
 
     "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 100,
 }
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'post_office.EmailBackend'
+
+EMAIL_HOST = 'smtp.mail.ru'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = "sendertest202201@gmail.com"
+EMAIL_HOST_PASSWORD = "rassamaha7012000"
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+
+SERVER_EMAIL = EMAIL_HOST_USER
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+CRONJOBS = [
+    ('59 23 * * * *', 'core.cron.scheduled_every_day')
+]

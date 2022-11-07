@@ -1,14 +1,25 @@
-from django.contrib.auth.models import User
+from datetime import datetime
+
 from core.models import Currency, Category,Transaction
+from django.contrib.auth.models import User
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import permissions
+from post_office import mail
 from rest_framework.filters import SearchFilter, OrderingFilter
-from rest_framework.generics import ListAPIView, CreateAPIView
+from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.decorators import action
 from rest_framework.response import Response
-from .serializers import CurrencySerializer, CategorySerializer,ReadTransactionSerializer,WriteTransactionSerializer,StatisticTransactionSerializer
+from rest_framework.views import APIView
+
+from .serializers import ReadTransactionSerializer, WriteTransactionSerializer,StatisticTransactionSerializer, ReportParamsSerializer
 from rest_framework.viewsets import ModelViewSet
+from core.reports import transaction_report
+from core.serializers import (
+    CategorySerializer,
+    CurrencySerializer,
+    ReadTransactionSerializer,
+    ReportEntrySerializer,
+    WriteTransactionSerializer,
+)
 
 #custom return statictic of user
 class StatisticListAPIView(ModelViewSet):
@@ -27,8 +38,6 @@ class StatisticListAPIView(ModelViewSet):
             else:
                 self.c[el.currency.code] += int(el.amount)
         return Response({"statistic": self.c})
-
-
 
 
 
@@ -64,9 +73,23 @@ class TransactionModelViewSet(ModelViewSet):
         return WriteTransactionSerializer
 
 
+class TransactionReportAPIView(APIView):
+    def get(self, request):
+        params_serializer = ReportParamsSerializer(data=request.GET, context={"request": request})
+        params_serializer.is_valid(raise_exception=True)
+        params = params_serializer.save()
+        data = transaction_report(params)
+        serializer = ReportEntrySerializer(instance=data, many=True)
+        return Response(data=serializer.data)
 
 
-
-
-
-
+class Sendmail():
+    a = User.objects.all()
+    for el in a:
+        info = Transaction.objects.all().filter(user_id=el.id, date__contains=datetime.today().date())
+        if info:
+            mail.send(
+                'elhom99@gmail.com',
+                subject='Transaction from yestarday',
+                message=f'{info}',
+            )

@@ -14,11 +14,10 @@ router.register(r"statistics", views.StatisticListAPIView, basename="statistic")
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    # obtain a token
-    # path("get_token/", obtain_auth_token, name="obtain-auth-token"),
     path("auth/", include('djoser.urls')),
     re_path(r"^auth/", include('djoser.urls.authtoken')),
     path("currencies/", views.CurrencyListAPIView.as_view(), name="currencies"),
+    path("report/", views.TransactionReportAPIView.as_view(), name="report"),
 
 ] + router.urls
 
