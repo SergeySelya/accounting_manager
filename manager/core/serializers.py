@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
+
 from core.models import Category, Currency, Transaction
 from core.reports import ReportParams
 
@@ -11,12 +12,11 @@ class ReadUserSerializer(serializers.ModelSerializer):
         read_only_fields = fields
 
 
-
-
 class CurrencySerializer(serializers.ModelSerializer):
     class Meta:
         model = Currency
         fields = ("id", "code", "name")
+
 
 class CategorySerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
@@ -25,9 +25,12 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = ("id", "name", "user")
 
+
 class WriteTransactionSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
-    currency = serializers.SlugRelatedField(slug_field="code", queryset=Currency.objects.all())
+    currency = serializers.SlugRelatedField(
+        slug_field="code", queryset=Currency.objects.all()
+    )
 
     class Meta:
         model = Transaction
@@ -40,7 +43,7 @@ class WriteTransactionSerializer(serializers.ModelSerializer):
             "category",
         )
 
-    #if tou want change any user category, it's block
+    # if tou want change any user category, it's block
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         user = self.context["request"].user
@@ -54,15 +57,7 @@ class ReadTransactionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Transaction
-        fields = (
-            "id",
-            "amount",
-            "currency",
-            "date",
-            "description",
-            "category",
-            "user"
-        )
+        fields = ("id", "amount", "currency", "date", "description", "category", "user")
         read_only_fields = fields
 
 
@@ -70,6 +65,7 @@ class StatisticTransactionSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
     currency = CurrencySerializer()
     category = CategorySerializer()
+
     class Meta:
         model = Transaction
         fields = (
@@ -84,11 +80,13 @@ class StatisticTransactionSerializer(serializers.ModelSerializer):
 
         read_only_fields = fields
 
+
 class ReportEntrySerializer(serializers.Serializer):
     category = CategorySerializer()
     total = serializers.DecimalField(max_digits=15, decimal_places=2)
     count = serializers.IntegerField()
     avg = serializers.DecimalField(max_digits=15, decimal_places=2)
+
 
 class ReportParamsSerializer(serializers.Serializer):
     start_date = serializers.DateTimeField()
@@ -97,4 +95,3 @@ class ReportParamsSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         return ReportParams(**validated_data)
-
