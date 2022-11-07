@@ -143,13 +143,15 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = 'smtp.mail.ru'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = "sendertest202201@gmail.com"
-EMAIL_HOST_PASSWORD = "rassamaha7012000"
+EMAIL_HOST_PASSWORD = "*"
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 
 SERVER_EMAIL = EMAIL_HOST_USER
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
+#python manage.py crontab add
+#shedule every day in 23.59 p.m.
 CRONJOBS = [
-    ('59 23 * * * *', 'core.cron.scheduled_every_day')
+    ('59 23 * * * *', 'core.cron.scheduled_job')
 ]
