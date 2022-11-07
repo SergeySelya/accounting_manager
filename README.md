@@ -7,7 +7,7 @@
 * Django 3.2
 * DRF 3.14
 
-#Endpoint
+# Endpoint
 
 | Method   | URL                                            | Description                              |
 | -------- | ---------------------------------------------- | ---------------------------------------- |
@@ -24,3 +24,5 @@
 | `GET`    |`/statistics/`                                  | Statistic of user(current balance)       |
 
 Cronjobs - sending messages automatically daily at 23:59(sends user transactions for the current day)
+
+# The second task in the folder "SQL task-2"
