@@ -1,6 +1,5 @@
-from django.contrib.auth.models import User, AbstractUser
+from django.contrib.auth.models import AbstractUser, User
 from django.db import models
-
 
 
 class Currency(models.Model):
@@ -31,11 +30,3 @@ class Transaction(models.Model):
 
     def __str__(self):
         return f"{self.amount} {self.currency.code} {self.date}"
-
-
-
-# class AllowList(models.Model):
-#     ip_address = models.GenericIPAddressField()
-#
-#     def __str__(self):
-#         return self.ip_address
