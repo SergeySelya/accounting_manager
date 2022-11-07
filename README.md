@@ -1,4 +1,5 @@
-# accounting_manager
+# Accounting_manager
+It is a sample project where we are building a personal finances app, where the user can keep track of their expenses and income.
 
 
 # Technology
