@@ -25,6 +25,7 @@
 
 Cronjobs - sending messages automatically daily at 23:59(sends user transactions for the current day)
 ![Sending messages on email ](https://user-images.githubusercontent.com/88445455/200417434-feb66b88-0931-40d2-9f45-f43ed01ad522.PNG)
+Transaction, statistics and categories by authorizated user 
 ![statistics](https://user-images.githubusercontent.com/88445455/200417469-97578453-173b-458b-88f3-feca43bc418d.PNG)
 
 
